@@ -35,4 +35,17 @@ class User extends CI_Controller
           $this->load->view('users/myprofile', $data);
           $this->load->view('templates/dashboard/dashboard_footer');
      }
+
+
+     public function hasil_keputusan()
+     {
+          $data['title'] = 'Hasil Keputusan';
+          $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+          $this->load->view('templates/dashboard/dashboard_header', $data);
+          $this->load->view('templates/dashboard/sidebar', $data);
+          $this->load->view('templates/dashboard/topbar', $data);
+          $this->load->view('users/hasil_keputusan', $data);
+          $this->load->view('templates/dashboard/dashboard_footer');
+     }
 }
