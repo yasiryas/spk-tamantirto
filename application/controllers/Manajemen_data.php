@@ -501,4 +501,27 @@ class Manajemen_data extends CI_Controller
                redirect('manajemen_data/pertanyaan');
           }
      }
+
+     public function keputusan(){
+          $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+          $data['title'] = 'Hasil Keputusan';
+          $data['sub_title'] = 'keputusan';
+          $data['data_indikator'] = $this->db->get('indikator')->result_array();
+
+          $this->load->view('templates/dashboard/dashboard_header', $data);
+          $this->load->view('templates/dashboard/sidebar', $data);
+          $this->load->view('templates/dashboard/topbar', $data);
+          $this->load->view('manajemen_data/keputusan', $data);
+          $this->load->view('templates/dashboard/dashboard_footer');
+     }
+
+     public function hitungfuzzy(){
+          $sdm = (float)$this->input->post('sdm', true);
+          $kl  = (float)$this->input->post('kl', true);
+          $psr = (float)$this->input->post('psr', true);
+
+          $hasil = fuzymamdani( $sdm,$kl,$psr );
+
+          echo json_encode(['hsl'=>$hasil]);
+     }
 }

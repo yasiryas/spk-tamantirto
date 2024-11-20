@@ -70,8 +70,8 @@
               <?php } ?>
 
               <!-- Nav Item - Hasil Keputusan -->
-              <li class="nav-item">
-                   <a class="nav-link" href="charts.html">
+              <li class="nav-item" <?= $title == "Hasil Keputusan" ? "active" : ""; ?>>
+                   <a class="nav-link" href="<?= base_url('manajemen_data/keputusan'); ?>">
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span>Hasil Keputusan</span></a>
               </li>
