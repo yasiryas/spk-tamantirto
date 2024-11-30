@@ -7,6 +7,18 @@ class Manajemen_data extends CI_Controller
      {
           parent::__construct();
           check_login();
+
+     }
+
+     protected function array_crips(){
+          $array_form = [
+               'rendah'=>'Rendah',
+               'sedang'=>'Sedang',
+               'tinggi'=>'Tinggi',
+               'sangat_tinggi'=>'Sangat Tinggi'
+          ]; 
+
+          return $array_form;
      }
 
      public function padukuhan()
@@ -15,6 +27,7 @@ class Manajemen_data extends CI_Controller
           $data['title'] = 'Manajemen Data';
           $data['sub_title'] = 'padukuhan';
           $data['data_padukuhan'] = $this->db->get('padukuhan')->result_array();
+          $data['data_indikator'] = $this->db->get('indikator')->result_array();
 
           $this->load->view('templates/dashboard/dashboard_header', $data);
           $this->load->view('templates/dashboard/sidebar', $data);
@@ -30,10 +43,15 @@ class Manajemen_data extends CI_Controller
                'is_unique' => 'Maaf, Padukuhan sudah ada!'
           ]);
 
+          $this->form_validation->set_rules('indikator_values[]', 'Padukhan', 'required|trim', [
+               'required' => 'Ups, Indikator Values harus terisi!',
+          ]);
+
           if ($this->form_validation->run() == false) {
                $data['title'] = 'Manajemen Data';
                $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
                $data['data_padukuhan'] = $this->db->get('padukuhan')->result_array();
+               $data['data_indikator'] = $this->db->get('indikator')->result_array();
 
                $this->load->view('templates/dashboard/dashboard_header', $data);
                $this->load->view('templates/dashboard/sidebar', $data);
@@ -44,6 +62,14 @@ class Manajemen_data extends CI_Controller
                $data = [
                     'nama_padukuhan' => htmlspecialchars($this->input->post('nama_padukuhan', true)),
                ];
+
+               if( !empty($this->input->post('indikator_ids')) ){
+                    $data['indikator_ids'] = implode(',', $this->input->post('indikator_ids') );
+               }
+
+               if( !empty($this->input->post('indikator_values')) ){
+                    $data['indikator_values'] = implode(',', $this->input->post('indikator_values') );
+               }
 
                $this->db->insert('padukuhan', $data);
                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Selamat! Padukuan berhasil ditambahkan!</div>');
@@ -63,9 +89,12 @@ class Manajemen_data extends CI_Controller
 
      public function update_padukuhan()
      {
-          $this->form_validation->set_rules('ubahNamaPadukuhan', 'Padukuhan', 'required|trim|is_unique[padukuhan.nama_padukuhan]', [
+          $this->form_validation->set_rules('ubahNamaPadukuhan', 'Padukuhan', 'required|trim', [
                'required' => 'Ups, Nama padukuhan harus terisi!',
-               'is_unique' => 'Maaf, Padukuhan sudah ada!'
+          ]);
+
+          $this->form_validation->set_rules('ubah_indikator_values[]', 'Padukuhan', 'required|trim', [
+               'required' => 'Ups, Indikator Values harus terisi!',
           ]);
 
           if ($this->form_validation->run() == false) {
@@ -77,6 +106,15 @@ class Manajemen_data extends CI_Controller
                $data = [
                     'nama_padukuhan' => $this->input->post('ubahNamaPadukuhan', true),
                ];
+
+               if( !empty($this->input->post('ubah_indikator_ids')) ){
+                    $data['indikator_ids'] = implode(',', $this->input->post('ubah_indikator_ids') );
+               }
+
+               if( !empty($this->input->post('ubah_indikator_values')) ){
+                    $data['indikator_values'] = implode(',', $this->input->post('ubah_indikator_values') );
+               }
+
 
                $this->db->where('id_padukuhan', $id_padukuhan);
                $this->db->update('padukuhan', $data);
@@ -191,6 +229,26 @@ class Manajemen_data extends CI_Controller
                'is_unique' => 'Maaf, indikator sudah ada!'
           ]);
 
+          $this->form_validation->set_rules('key_indikator', 'indikator', 'required|trim|htmlspecialchars|is_unique[indikator.key_indikator]', [
+               'required' => 'Ups, Key indikator harus terisi!',
+               'is_unique' => 'Maaf, Key indikator sudah ada!'
+          ]);
+
+          $this->form_validation->set_rules('rendah', 'indikator', 'required|trim|htmlspecialchars|is_unique[indikator.rendah]', [
+               'required' => 'Ups, Rendah harus terisi!',
+               'is_unique' => 'Maaf, Rendah sudah ada!'
+          ]);
+
+          $this->form_validation->set_rules('sedang', 'indikator', 'required|trim|htmlspecialchars|is_unique[indikator.sedang]', [
+               'required' => 'Ups, Sedang harus terisi!',
+               'is_unique' => 'Maaf, Sedang sudah ada!'
+          ]);
+
+          $this->form_validation->set_rules('tinggi', 'indikator', 'required|trim|htmlspecialchars|is_unique[indikator.tinggi]', [
+               'required' => 'Ups, Tinggi harus terisi!',
+               'is_unique' => 'Maaf, Tinggi sudah ada!'
+          ]);
+
           if ($this->form_validation->run() == false) {
                $data['title'] = 'Manajemen Data';
                $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
@@ -204,6 +262,10 @@ class Manajemen_data extends CI_Controller
           } else {
                $data = [
                     'nama_indikator' => htmlspecialchars($this->input->post('nama_indikator', true)),
+                    'key_indikator' => $this->input->post('key_indikator', true),
+                    'rendah' => $this->input->post('rendah', true),
+                    'sedang' => $this->input->post('sedang', true),
+                    'tinggi' => $this->input->post('tinggi', true),
                ];
 
                $this->db->insert('indikator', $data);
@@ -224,13 +286,29 @@ class Manajemen_data extends CI_Controller
 
      public function update_indikator()
      {
-          $this->form_validation->set_rules('ubah_nama_indikator', 'indikator', 'required|trim|is_unique[indikator.nama_indikator]', [
+          $this->form_validation->set_rules('ubah_nama_indikator', 'indikator', 'required|trim', [
                'required' => 'Ups, Nama indikator harus terisi!',
-               'is_unique' => 'Maaf, indikator sudah ada!'
           ]);
 
-          if ($this->form_validation->run() == false) {
+          $this->form_validation->set_rules('ubah_key_indikator', 'indikator', 'required|trim|htmlspecialchars', [
+               'required' => 'Ups, Key indikator harus terisi!',
+          ]);
 
+          $this->form_validation->set_rules('ubah_rendah', 'indikator', 'required|trim|htmlspecialchars', [
+               'required' => 'Ups, Rendah harus terisi!',
+          ]);
+
+          $this->form_validation->set_rules('ubah_sedang', 'indikator', 'required|trim|htmlspecialchars', [
+               'required' => 'Ups, Sedang harus terisi!',
+          ]);
+
+          $this->form_validation->set_rules('ubah_tinggi', 'indikator', 'required|trim|htmlspecialchars', [
+               'required' => 'Ups, Tinggi harus terisi!',
+          ]);
+
+          
+          if ($this->form_validation->run() == false) {
+               
                $data['title'] = 'Manajemen Data';
                $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
                $data['data_indikator'] = $this->db->get('indikator')->result_array();
@@ -242,8 +320,13 @@ class Manajemen_data extends CI_Controller
                $this->load->view('templates/dashboard/dashboard_footer');
           } else {
                $id_indikator = $this->input->post('id_indikator', true);
+          
                $data = [
                     'nama_indikator' => $this->input->post('ubah_nama_indikator', true),
+                    'key_indikator' => $this->input->post('ubah_key_indikator', true),
+                    'rendah' => $this->input->post('ubah_rendah', true),
+                    'sedang' => $this->input->post('ubah_sedang', true),
+                    'tinggi' => $this->input->post('ubah_tinggi', true),
                ];
 
                $this->db->where('id_indikator', $id_indikator);
@@ -501,4 +584,85 @@ class Manajemen_data extends CI_Controller
                redirect('manajemen_data/pertanyaan');
           }
      }
+
+     public function nilaiCrip()
+     {
+          $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+          $data['title'] = 'Manajemen Data';
+          $data['sub_title'] = 'nilaicrip';
+          $data['array_form'] = self::array_crips();
+          $data['data_nilaicrip'] = $this->db->get('nilaicrips')->row_array();
+
+          $this->load->view('templates/dashboard/dashboard_header', $data);
+          $this->load->view('templates/dashboard/sidebar', $data);
+          $this->load->view('templates/dashboard/topbar', $data);
+          $this->load->view('manajemen_data/nilaicrip', $data);
+          $this->load->view('templates/dashboard/dashboard_footer');
+     }
+
+     public function formNilaiCrip(){
+          $post = $this->input->post();
+          $rules = [];
+          foreach( self::array_crips() as $key => $row ){
+               $rules[] = array(
+                    'field' => $key,
+                    'label' => $row,
+                    'rules' => 'required',
+                    'message' => array(
+                             'required' => 'You must provide a %s.',
+                    ),
+               );
+          }
+
+          $this->form_validation->set_rules($rules);
+
+          if ($this->form_validation->run() == false) {
+               $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">'.validation_errors().'</div>');
+               redirect('manajemen_data/nilaiCrip');
+          }else{
+               if( isset( $post['id_nilaicrip'] ) ){
+                    $data = [
+                         'rendah'=>$post['rendah'],
+                         'sedang'=>$post['sedang'],
+                         'tinggi'=>$post['tinggi'],
+                         'sangat_tinggi'=>$post['sangat_tinggi'],
+                    ];
+
+                    $this->db->where('id_nilaicrip', $post['id_nilaicrip']);
+                    $this->db->update('nilaicrips', $data);
+
+               }else{
+                    $this->db->insert('nilaicrips', $this->security->xss_clean($post));
+               }
+               
+               $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Selamat! Nilai Crip Defuzikasi berhasil ditambahkan!</div>');
+               redirect('manajemen_data/nilaiCrip');
+          }
+     }
+
+     public function keputusan(){
+          $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+          $data['title'] = 'Hasil Keputusan';
+          $data['sub_title'] = 'keputusan';
+          $data['data_indikator'] = $this->db->get('indikator')->result_array();
+          $data['perhitungan_fuzzy'] = prosesPerhitunganKeseluruhan();
+          
+          $this->load->view('templates/dashboard/dashboard_header', $data);
+          $this->load->view('templates/dashboard/sidebar', $data);
+          $this->load->view('templates/dashboard/topbar', $data);
+          $this->load->view('manajemen_data/keputusan', $data);
+          $this->load->view('templates/dashboard/dashboard_footer');
+     }
+
+     public function hitungfuzzy(){
+          $sdm = (float)$this->input->post('sdm', true);
+          $kl  = (float)$this->input->post('kl', true);
+          $psr = (float)$this->input->post('psr', true);
+
+          $hasil = fuzymamdani( $sdm,$kl,$psr );
+
+          echo json_encode(['hsl'=>$hasil]);
+     }
+
+     
 }

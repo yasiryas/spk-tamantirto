@@ -21,6 +21,37 @@
                                                  <?= form_error('nama_indikator', '<small class="text-danger pl-1">', '</small>'); ?>
                                             </div>
                                        </div>
+                                       <div class="form-group">
+                                             <div class="col-auto mb-2">
+                                                  <label for="nama_indikator">Key Indikator</label>
+                                                  <input type="text" value="<?= set_value('key_indikator'); ?>" maxlength="8" class="form-control" name="key_indikator" placeholder="Isi dengan Kode misal : (SDM) inisial dari Sumber Daya Manusia">
+                                                  <?= form_error('key_indikator', '<small class="text-danger pl-1">', '</small>'); ?>
+                                             </div>
+                                       </div>
+                                       <!-- Range Nilai -->
+                                       <div class="form-group">
+                                             <div class="col-auto mb-2">
+                                                  <label for="rendah">Rendah</label>
+                                                  <input type="text" value="<?= set_value('rendah'); ?>" maxlength="8" class="form-control" name="rendah" placeholder="Range nilai rendah Ex: 0-30">
+                                                  <?= form_error('rendah', '<small class="text-danger pl-1">', '</small>'); ?>
+                                             </div>
+                                       </div>
+                                       <div class="form-group">
+                                             <div class="col-auto mb-2">
+                                                  <label>Sedang</label>
+                                                  <input type="text" value="<?= set_value('sedang'); ?>" maxlength="8" class="form-control" name="sedang" placeholder="Range nilai sedang Ex: 0-30">
+                                                  <?= form_error('sedang', '<small class="text-danger pl-1">', '</small>'); ?>
+                                             </div>
+                                       </div>
+                                       <div class="form-group">
+                                             <div class="col-auto mb-2">
+                                                  <label>Tinggi</label>
+                                                  <input type="text" value="<?= set_value('tinggi'); ?>" maxlength="8" class="form-control" name="tinggi" placeholder="Range nilai tinggi Ex: 0-30">
+                                                  <?= form_error('tinggi', '<small class="text-danger pl-1">', '</small>'); ?>
+                                             </div>
+                                       </div>
+                                        <!-- End Range Nilai -->
+
                                        <div class="modal-footer mt-3">
                                             <button class="col-auto ml-auto btn btn-primary btn-sm" id="btnAddindikator" type="submit"><i class="fas fa-save"></i>&nbsp Save</button>
                                        </div>
@@ -44,6 +75,38 @@
                                                  <?= form_error('ubah_nama_indikator', '<small class="text-danger pl-1" id="errorUbahindikator" value="1">', '</small>'); ?>
                                             </div>
                                        </div>
+                                       <div class="form-group">
+                                             <div class="col-auto mb-2">
+                                                  <label for="nama_indikator">Key Indikator</label>
+                                                  <input value="<?= set_value('ubah_key_indikator'); ?>" type="text" maxlength="8" class="form-control" name="ubah_key_indikator" placeholder="Isi dengan Kode misal : (SDM) inisial dari Sumber Daya Manusia">
+                                                  <?= form_error('ubah_key_indikator', '<small class="text-danger pl-1">', '</small>'); ?>
+                                             </div>
+                                       </div>
+
+                                       <!-- Range Nilai -->
+                                       <div class="form-group">
+                                             <div class="col-auto mb-2">
+                                                  <label for="rendah">Rendah</label>
+                                                  <input type="text" value="<?= set_value('ubah_rendah'); ?>" maxlength="8" class="form-control" name="ubah_rendah" placeholder="Range nilai rendah Ex: 0-30">
+                                                  <?= form_error('ubah_rendah', '<small class="text-danger pl-1">', '</small>'); ?>
+                                             </div>
+                                       </div>
+                                       <div class="form-group">
+                                             <div class="col-auto mb-2">
+                                                  <label>Sedang</label>
+                                                  <input type="text" value="<?= set_value('ubah_sedang'); ?>" maxlength="8" class="form-control" name="ubah_sedang" placeholder="Range nilai sedang Ex: 0-30">
+                                                  <?= form_error('ubah_sedang', '<small class="text-danger pl-1">', '</small>'); ?>
+                                             </div>
+                                       </div>
+                                       <div class="form-group">
+                                             <div class="col-auto mb-2">
+                                                  <label>Tinggi</label>
+                                                  <input type="text" value="<?= set_value('ubah_tinggi'); ?>" maxlength="8" class="form-control" name="ubah_tinggi" placeholder="Range nilai tinggi Ex: 0-30">
+                                                  <?= form_error('ubah_tinggi', '<small class="text-danger pl-1">', '</small>'); ?>
+                                             </div>
+                                       </div>
+                                        <!-- End Range Nilai -->
+
                                        <div class="modal-footer mt-3">
                                             <div class="nav justify-content-end">
                                                  <a class="col-auto ml-auto btn btn-danger btn-sm closeUbahindikator" id="btnCloseUpdateindikator"><i class="fas fa-times"></i>&nbsp Close</a>
@@ -66,17 +129,31 @@
                                                  <tr>
                                                       <td>No</td>
                                                       <td>Nama indikator</td>
+                                                      <td>Key Indikator</td>
+                                                      <td>Rendah</td>
+                                                      <td>Sedang</td>
+                                                      <td>Tinggi</td>
                                                       <td>Aksi</td>
                                                  </tr>
                                             </thead>
                                             <tbody>
                                                  <?php $i = 1; ?>
-                                                 <?php foreach ($data_indikator as $dk) : ?>
+                                                 <?php foreach ($data_indikator as $dk) : 
+                                                       $items_range = [
+                                                            'rendah' => $dk['rendah'] ?? '',
+                                                            'sedang' => $dk['sedang'] ?? '',
+                                                            'tinggi' => $dk['tinggi'] ?? '',
+                                                       ];
+                                                  ?>
                                                       <tr>
                                                            <td><?= $i++ ?></td>
                                                            <td><?= $dk['nama_indikator']; ?></td>
+                                                           <td><?= $dk['key_indikator']; ?></td>
+                                                           <td><?= $dk['rendah'] ?? ''; ?></td>
+                                                           <td><?= $dk['sedang'] ?? ''; ?></td>
+                                                           <td><?= $dk['tinggi'] ?? ''; ?></td>
                                                            <td>
-                                                                <a href="#" class="btn btn-warning btn-sm mb-1 btnUbahindikator" id="btnUbahindikator" data-toggle="modal" data-id-indikator="<?= $dk['id_indikator']; ?>" data-nama-indikator="<?= $dk['nama_indikator']; ?>"><i class="fas fa-edit"> </i>&nbsp Ubah</a>
+                                                                <a href="#" class="btn btn-warning btn-sm mb-1 btnUbahindikator" id="btnUbahindikator" data-range='<?= json_encode($items_range); ?>' data-toggle="modal" data-key-indikator="<?= $dk['key_indikator']; ?>" data-id-indikator="<?= $dk['id_indikator']; ?>" data-nama-indikator="<?= $dk['nama_indikator']; ?>"><i class="fas fa-edit"> </i>&nbsp Ubah</a>
                                                                 <a href="#" class="btn btn-danger btn-sm mb-1 btnHapusindikator" id="btnHapusindikator" data-toggle="modal" data-target="#modalHapusindikator" data-id-indikator="<?= $dk['id_indikator']; ?>" data-name="<?= $dk['nama_indikator']; ?>"> <i class="fas fa-trash"></i>&nbsp Hapus</a>
                                                            </td>
                                                       </tr>
