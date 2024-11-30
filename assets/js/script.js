@@ -201,9 +201,20 @@ $('.btnUbahKategori').on('click', function () {
 $('.btnUbahindikator').on('click', function () {
         const id = $(this).data('id-indikator');
         const name = $(this).data('nama-indikator');
+        const key = $(this).data('key-indikator');
+    
+        // Range Nilai
+        const items_range = JSON.parse( JSON.stringify( $(this).data('range') ) );
+
+        $.each(items_range, function(index, value) {
+            $(`input[name="ubah_${index}"]`).val(value);
+        });
+        
 
         $('#idUpdateindikator').val(id);
         $('#namaUpdateindikator').val(name);
+        $('input[name="ubah_key_indikator"]').val(key);
+        
 
     $('#form-ubah-indikator').css("display", "block");
     $('#namaUpdateindikator').focus();
