@@ -1,296 +1,87 @@
-         <div class="container-fluid">
+<?php
+$surveyorOptions = [];
+foreach ($surveyor ?? [] as $item) {
+  $surveyorOptions[(int) $item['id']] = $item['name'];
+}
 
-              <!-- Page Heading -->
-              <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
-              <div class="row">
-                   <div class="col-lg-12">
-                        <?= $this->session->flashdata('message'); ?>
-                        <!-- form tambah pertanyaan -->
-                        <div class="card shadow mb-4" id="form-tambah-pertanyaan">
-                             <div class="card-header py-3">
-                                  <div class="row align-middle d-flex">
-                                       <h6 class="m-2 col-auto font-weight-bold text-primary" id="titleFormActionpertanyaan">Tambah Pertanyaan</h6>
-                                  </div>
-                             </div>
-                             <div class="card-body">
-                                  <form action="<?= base_url('manajemen_data/tambah_pertanyaan'); ?>" method="post">
-                                       <div class="row">
-                                            <div class="col-auto">
-                                                 <div class="form-group">
-                                                      <div class="form-group">
-                                                           <label for="tanggal_pertanyaan">Tanggal Survey</label>
-                                                           <input type="date" class="form-control" name="tanggal_pertanyaan" id="tanggal_pertanyaan" value="<?= set_value("tanggal_pertanyaan"); ?>">
-                                                           <?= form_error('tanggal_pertanyaan', '<small class="text-danger pl-1">', '</small>'); ?>
-                                                      </div>
-                                                 </div>
-                                            </div>
-                                            <div class="col-auto">
-                                                 <div class="form-group">
-                                                      <label for="surveyor_pertanyaan">Surveyor</label>
-                                                      <select class="form-control" id="surveyor_pertanyaan" name="surveyor_pertanyaan">
-                                                           <option value="">Pilih surveyor</option>
-                                                           <?php foreach ($surveyor as $s) : ?>
-                                                                <option value="<?= $s['id']; ?>" <?= set_select("surveyor_pertanyaan", $s['id']); ?>><?= $s['name']; ?></option>
-                                                           <?php endforeach; ?>
-                                                      </select>
-                                                      <?= form_error('surveyor_pertanyaan', '<small class="text-danger pl-1">', '</small>'); ?>
-                                                 </div>
-                                            </div>
-                                            <div class="col-auto">
-                                                 <div class="form-group">
-                                                      <div class="form-group">
-                                                           <label for="kategori_pertanyaan">Kategori</label>
-                                                           <select class="form-control" id="kategori_pertanyaan" name="kategori_pertanyaan">
-                                                                <option value="">Pilih Kategori</option>
-                                                                <?php foreach ($kategori as $kat) : ?>
-                                                                     <option value="<?= $kat['id_kategori']; ?>" <?= set_select("kategori_pertanyaan", $kat['id_kategori']); ?>><?= $kat['nama_kategori']; ?></option>
-                                                                <?php endforeach; ?>
-                                                           </select>
-                                                           <?= form_error('kategori_pertanyaan', '<small class="text-danger pl-1">', '</small>'); ?>
-                                                      </div>
-                                                 </div>
-                                            </div>
-                                            <div class="col-auto">
-                                                 <div class="form-group">
-                                                      <div class="form-group">
-                                                           <label for="indikator_pertanyaan">Indikator</label>
-                                                           <select class="form-control" id="indikator_pertanyaan" name="indikator_pertanyaan">
-                                                                <option value="">Pilih Indikator</option>
-                                                                <?php foreach ($indikator as $i) : ?>
-                                                                     <option value="<?= $i['id_indikator']; ?>" <?= set_select("indikator_pertanyaan", $i['id_indikator']); ?>><?= $i['nama_indikator']; ?></option>
-                                                                <?php endforeach; ?>
-                                                           </select>
-                                                           <?= form_error('indikator_pertanyaan', '<small class="text-danger pl-1">', '</small>'); ?>
-                                                      </div>
-                                                 </div>
-                                            </div>
-                                            <div class="col-auto">
-                                                 <div class="form-group">
-                                                      <label for="padukuhan_pertanyaan">Padukuhan</label>
-                                                      <select class="form-control" id="padukuhan_pertanyaan" name="padukuhan_pertanyaan">
-                                                           <option value="">Pilih Padukuhan</option>
-                                                           <?php foreach ($padukuhan as $pad) : ?>
-                                                                <option value="<?= $pad['id_padukuhan']; ?>" <?= set_select("padukuhan_pertanyaan", $pad['id_padukuhan']); ?>><?= $pad['nama_padukuhan']; ?></option>
-                                                           <?php endforeach; ?>
-                                                      </select>
-                                                      <?= form_error('padukuhan_pertanyaan', '<small class="text-danger pl-1">', '</small>'); ?>
-                                                 </div>
-                                            </div>
-                                       </div>
-                                       <div class="row">
-                                            <div class="col">
-                                                 <div class="form-group">
-                                                      <label for="pertanyaan">Pertanyaan</label>
-                                                      <textarea type="text" class="form-control" id="pertanyaan" name="pertanyaan"><?= set_value('pertanyaan'); ?></textarea>
-                                                      <?= form_error('pertanyaan', '<small class="text-danger pl-1">', '</small>'); ?>
-                                                 </div>
-                                            </div>
-                                       </div>
-                                       <div class="row">
-                                            <div class="col">
-                                                 <div class="form-group">
-                                                      <label for="skor_pertanyaan">Skor</label>
-                                                      <input type="number" class="form-control" id="skor_pertanyaan" name="skor_pertanyaan" value="<?= set_value('skor_pertanyaan'); ?>">
-                                                      <?= form_error('skor_pertanyaan', '<small class="text-danger pl-1">', '</small>'); ?>
-                                                 </div>
-                                            </div>
-                                       </div>
-                                       <div class="modal-footer mt-3">
-                                            <button class="col-auto ml-auto btn btn-primary btn-sm" id="btnAddpertanyaan" type="submit"><i class="fas fa-save"></i>&nbsp Save</button>
-                                       </div>
-                                  </form>
-                             </div>
-                        </div>
-                        <!-- end form tambah pertanyaan -->
-                        <!-- form ubah pertanyaan -->
-                        <div class="card shadow mb-4" id="form-ubah-pertanyaan" style="display: none">
-                             <div class="card-header py-3">
-                                  <div class="row align-middle d-flex">
-                                       <h6 class="m-2 col-auto font-weight-bold text-primary" id="titleFormActionpertanyaan">Ubah Pertanyaan</h6>
-                                  </div>
-                             </div>
-                             <div class="card-body">
-                                  <form action="<?= base_url('manajemen_data/update_pertanyaan'); ?>" method="post">
-                                       <div class="row">
-                                            <div class="col-auto">
-                                                 <div class="form-group">
-                                                      <div class="form-group">
-                                                           <label for="ubah_tanggal_pertanyaan">Tanggal Survey</label>
-                                                           <input type="date" class="form-control" name="ubah_tanggal_pertanyaan" id="ubah_tanggal_pertanyaan" value="<?= set_value("ubah_tanggal_pertanyaan"); ?>">
-                                                           <?= form_error('ubah_tanggal_pertanyaan', '<small class="text-danger pl-1">', '</small>'); ?>
-                                                      </div>
-                                                 </div>
-                                            </div>
-                                            <div class="col-auto">
-                                                 <div class="form-group">
-                                                      <label for="ubah_surveyor_pertanyaan">Surveyor</label>
-                                                      <select class="form-control" id="ubah_surveyor_pertanyaan" name="ubah_surveyor_pertanyaan">
-                                                           <option value="">Pilih surveyor</option>
-                                                           <?php foreach ($surveyor as $s) : ?>
-                                                                <option value="<?= $s['id']; ?>" <?= set_select("ubah_surveyor_pertanyaan", $s['id']); ?>><?= $s['name']; ?></option>
-                                                           <?php endforeach; ?>
-                                                      </select>
-                                                      <?= form_error('ubah_surveyor_pertanyaan', '<small class="text-danger pl-1">', '</small>'); ?>
-                                                 </div>
-                                            </div>
-                                            <div class="col-auto">
-                                                 <div class="form-group">
-                                                      <input type="hidden" id="idUpdatePertanyaan" name="update_id_pertanyaan" value="">
-                                                      <label for="kategori_pertanyaan">Kategori</label>
-                                                      <select class="form-control" id="updateKategoriPertanyaan" name="update_kategori_pertanyaan">
-                                                           <option value="">Pilih Kategori</option>
-                                                           <?php foreach ($kategori as $kat) : ?>
-                                                                <option value="<?= $kat['id_kategori']; ?>" <?= set_select("update_kategori_pertanyaan", $kat['nama_kategori']); ?>><?= $kat['nama_kategori']; ?></option>
-                                                           <?php endforeach; ?>
-                                                      </select>
-                                                      <?= form_error('update_kategori_pertanyaan', '<small class="text-danger pl-1 error_update_pertanyaan" value="1">', '</small>'); ?>
-                                                 </div>
-                                            </div>
-                                            <div class="col-auto">
-                                                 <div class="form-group">
-                                                      <label for="indikator_pertanyaan">Indikator</label>
-                                                      <select class="form-control" id="updateIndikatorPertanyaan" name="update_indikator_pertanyaan">
-                                                           <option value="">Pilih indikator</option>
-                                                           <?php foreach ($indikator as $i) : ?>
-                                                                <option value="<?= $i['id_indikator']; ?>" <?= set_select("update_indikator_pertanyaan", $i['id_indikator']); ?>><?= $i['nama_indikator']; ?></option>
-                                                           <?php endforeach; ?>
-                                                      </select>
-                                                      <?= form_error('update_indikator_pertanyaan', '<small class="text-danger pl-1 error_update_pertanyaan" value="1">', '</small>'); ?>
-                                                 </div>
-                                            </div>
-                                            <div class="col-auto">
-                                                 <div class="form-group">
-                                                      <label for="padukuhan_pertanyaan">Padukuhan</label>
-                                                      <select class="form-control" id="updatePadukuhanPertanyaan" name="update_padukuhan_pertanyaan">
-                                                           <option value="">Pilih Padukuhan</option>
-                                                           <?php foreach ($padukuhan as $pad) : ?>
-                                                                <option value="<?= $pad['id_padukuhan']; ?>" <?= set_select("update_padukuhan_pertanyaan", $pad['nama_padukuhan']); ?>><?= $pad['nama_padukuhan']; ?></option>
-                                                           <?php endforeach; ?>
-                                                      </select>
-                                                      <?= form_error('update_padukuhan_pertanyaan', '<small class="text-danger pl-1 error_update_pertanyaan" value="1">', '</small>'); ?>
-                                                 </div>
-                                            </div>
-                                       </div>
-                                       <div class="row">
-                                            <div class="col">
-                                                 <div class="form-group">
-                                                      <label for="ubah_pertanyaan">Pertanyaan</label>
-                                                      <textarea type="text" class="form-control" id="updatePertannyaan" name="update_pertanyaan"><?= set_value('update_pertanyaan'); ?></textarea>
-                                                      <?= form_error('update_pertanyaan', '<small class="text-danger pl-1 error_update_pertanyaan" value="1">', '</small>'); ?>
-                                                 </div>
-                                            </div>
-                                       </div>
-                                       <div class="row">
-                                            <div class="col">
-                                                 <div class="form-group">
-                                                      <label for="ubah_skor_pertanyaan">Skor</label>
-                                                      <input type="number" class="form-control" id="updateSkor" name="update_skor_pertanyaan" value="<?= set_value('update_skor_pertanyaan'); ?>">
-                                                      <?= form_error('update_skor_pertanyaan', '<small class="text-danger pl-1 error_update_pertanyaan" value="1">', '</small>'); ?>
-                                                 </div>
-                                            </div>
-                                       </div>
-                                       <div class="modal-footer mt-3">
-                                            <button class="col-auto ml-auto btn btn-primary btn-sm" id="btnUpdatePertanyaan" type="submit"><i class="fas fa-save"></i>&nbsp Save</button>
-                                       </div>
-                                  </form>
-                             </div>
-                        </div>
-                        <!-- end form ubah pertanyaan -->
-                        <div class="card shadow mb-4">
-                             <div class="card-header py-3">
-                                  <div class="row align-middle d-flex">
-                                       <h6 class="m-2 col-auto font-weight-bold text-primary">Data Pertanyaan</h6>
-                                  </div>
-                             </div>
-                             <div class="card-body">
-                                  <div class="table-responsive">
-                                       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                            <thead>
-                                                 <tr>
-                                                      <td>No</td>
-                                                      <td>Tanggal Survey</td>
-                                                      <td>Surveyor</td>
-                                                      <td>Pertanyaan</td>
-                                                      <td>Kategori</td>
-                                                      <td>Indikator</td>
-                                                      <td>Padukuhan</td>
-                                                      <td>Skor</td>
-                                                      <td>Aksi</td>
-                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                                 <?php $i = 1; ?>
-                                                 <?php foreach ($data_pertanyaan as $dp) : ?>
-                                                      <tr>
-                                                           <td><?= $i++ ?></td>
-                                                           <td><?= date('d F Y', strtotime($dp['tanggal'])); ?></td>
-                                                           <td><?= $dp['surveyor']; ?></td>
-                                                           <td><?= $dp['pertanyaan']; ?></td>
-                                                           <td><?= $dp['kategori']; ?></td>
-                                                           <td><?= $dp['indikator']; ?></td>
-                                                           <td><?= $dp['padukuhan']; ?></td>
-                                                           <td><?= $dp['skor']; ?></td>
-                                                           <td>
-                                                                <a href="#" class="btn btn-warning btn-sm mb-1 btnUbahPertanyaan" id="btnUbahPertanyaan" data-toggle="modal" data-id-pertanyaan="<?= $dp['id_pertanyaan']; ?>" data-tanggal-pertanyaan="<?= $dp['tanggal']; ?>" data-surveyor="<?= $dp['id_surveyor']; ?>" data-pertanyaan="<?= $dp['pertanyaan']; ?>" data-id-kategori="<?= $dp['id_kategori']; ?>" data-id-indikator="<?= $dp['id_indikator']; ?>" data-id-padukuhan="<?= $dp['id_padukuhan']; ?>" data-skor="<?= $dp['skor']; ?>"> <i class="fas fa-edit"></i>&nbsp Ubah</a>
-                                                                <a href="#" class="btn btn-danger btn-sm mb-1 btnHapusPertanyaan" id="btnHapusPertanyaan" data-toggle="modal" data-target="#modalHapuspertanyaan" data-id-pertanyaan="<?= $dp['id_pertanyaan']; ?>"> <i class="fas fa-trash"></i>&nbsp Hapus</a>
-                                                           </td>
-                                                      </tr>
-                                                 <?php endforeach; ?>
-                                            </tbody>
-                                  </div>
-                             </div>
-                        </div>
+$padukuhanOptions = [];
+foreach ($padukuhan ?? [] as $item) {
+  $padukuhanOptions[(int) $item['id_padukuhan']] = $item['nama_padukuhan'];
+}
 
-                        <!-- Modal Hapus Pertanyaan -->
-                        <div class="modal fade" id="modalHapuspertanyaan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                             <div class="modal-dialog">
-                                  <div class="modal-content">
-                                       <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Hapus pertanyaan</h5>
-                                            <button type="button" class="close  closeHapuspertanyaan" data-dismiss="modal" aria-label="Close">
-                                                 <span aria-hidden="true">&times;</span>
-                                            </button>
-                                       </div>
-                                       <form action="<?= base_url('manajemen_data/hapus_pertanyaan'); ?>" method="POST">
-                                            <div class="modal-body">
-                                                 Apakah kamu yakin mau menghapus pertanyaan ini?
-                                                 <input name="id_pertanyaan" id="id_pertanyaan" type="hidden" value="id">
-                                            </div>
-                                            <div class="modal-footer">
-                                                 <button type="submit" class="btn btn-danger">Delete</button>
-                                                 <button type="button" class="btn btn-secondary closeHapusPertanyaan" data-dismiss="modal">Close</button>
-                                            </div>
-                                       </form>
-                                  </div>
-                             </div>
-                        </div>
+$kategoriOptions = [];
+foreach ($kategori ?? [] as $item) {
+  $kategoriOptions[(int) $item['id_kategori']] = $item['nama_kategori'];
+}
 
-                        <!-- Modal Ubah pertanyaan-->
-                        <div id="modalUbahpertanyaan" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                             <div class="modal-dialog">
-                                  <div class="modal-content">
-                                       <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Ubah Data pertanyaan</h5>
-                                            <button type="button" class="close closeUbahpertanyaan" data-dismiss="modal" aria-label="Close">
-                                                 <span aria-hidden="true">&times;</span>
-                                            </button>
-                                       </div>
-                                       <form action="<?= base_url('manajemen_data/update_pertanyaan'); ?>" method="POST">
-                                            <div class="modal-body">
-                                                 <input name="idUpdatepertanyaan" id="idUpdatepertanyaan" type="hidden" value="">
-                                                 <div class="form-group">
-                                                      <label for="ubahNamapertanyaan">Nama pertanyaan</label>
-                                                      <input type="text" class="form-control" id="ubahNamapertanyaan" name="ubahNamapertanyaan" value="<?= set_value('ubahNamapertanyaan'); ?>">
-                                                      <?= $this->session->flashdata('message-update-pertanyaan'); ?>
-                                                      <div id="errorNamapertanyaan" class="invalid-feedback ml-1"></div>
-                                                 </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                 <button type="button" class="btn btn-secondary closeUbahpertanyaan" data-dismiss="modal">Close</button>
-                                                 <button type="submit" class="btn btn-primary" id="btnUpdatepertanyaan">Update</button>
-                                            </div>
-                                       </form>
-                                  </div>
-                             </div>
-                        </div>
-                        <!-- /.container-fluid -->
+$indikatorOptions = [];
+foreach ($indikator ?? [] as $item) {
+  $indikatorOptions[(int) $item['id_indikator']] = $item['kode_indikator'] . ' — ' . $item['nama_indikator'];
+}
+
+$fields = [
+  ['name' => 'tanggal_survey', 'label' => 'Tanggal', 'type' => 'date', 'required' => true, 'value' => date('Y-m-d')],
+  ['name' => 'id_surveyor', 'label' => 'Surveyor', 'type' => 'select', 'required' => true, 'options' => $surveyorOptions],
+  ['name' => 'id_padukuhan', 'label' => 'Padukuhan', 'type' => 'select', 'required' => true, 'options' => $padukuhanOptions],
+  ['name' => 'pertanyaan', 'label' => 'Pertanyaan', 'type' => 'text', 'required' => true],
+  ['name' => 'id_kategori', 'label' => 'Kategori', 'type' => 'select', 'required' => true, 'options' => $kategoriOptions],
+  ['name' => 'id_indikator', 'label' => 'Indikator', 'type' => 'select', 'required' => true, 'options' => $indikatorOptions],
+  ['name' => 'skor', 'label' => 'Skor', 'type' => 'number', 'required' => true, 'min' => 0],
+];
+
+$this->load->view('partials/modal_form', [
+  'modalId' => 'modal-pertanyaan',
+  'title' => 'Pertanyaan',
+  'action' => base_url('manajemen_data/tambah_pertanyaan'),
+  'fields' => array_merge([['name' => 'id_pertanyaan', 'type' => 'hidden']], $fields),
+  'size' => 'modal-lg',
+]);
+
+$this->load->view('partials/modal_confirm', [
+  'modalId' => 'modal-konfirmasi',
+  'title' => 'Hapus pertanyaan',
+  'action' => base_url('manajemen_data/hapus_pertanyaan'),
+  'message' => 'Hapus pertanyaan ini?',
+]);
+?>
+
+<div class="page-head">
+  <div><p class="eyebrow">Data master</p><h1>Data Pertanyaan</h1><p>Pertanyaan survei beserta skor hasil penilaian per padukuhan.</p></div>
+  <button class="btn btn-gold" data-form-open="#modal-pertanyaan" data-title="Tambah pertanyaan" data-form-action="<?= base_url('manajemen_data/tambah_pertanyaan'); ?>" data-fields="<?= modal_fields([]); ?>"><i class="fas fa-plus mr-2"></i> Tambah</button>
+</div>
+
+<?= $this->session->flashdata('message'); ?>
+
+<div class="card flush">
+  <table class="table mb-0">
+    <thead><tr><th>Pertanyaan</th><th>Padukuhan</th><th>Indikator</th><th>Surveyor</th><th class="num">Skor</th><th style="width:170px;">Aksi</th></tr></thead>
+    <tbody>
+      <?php foreach ($data_pertanyaan ?? [] as $item): ?>
+        <?php
+        $pertanyaan = htmlspecialchars(mb_strimwidth($item['pertanyaan'], 0, 65, '…'), ENT_QUOTES, 'UTF-8');
+        $dataUbah = modal_fields([
+          'id_pertanyaan' => (int) $item['id_pertanyaan'],
+          'tanggal_survey' => $item['tanggal_survey'],
+          'id_surveyor' => (int) $item['id_surveyor'],
+          'id_padukuhan' => (int) $item['id_padukuhan'],
+          'pertanyaan' => $item['pertanyaan'],
+          'id_kategori' => (int) $item['id_kategori'],
+          'id_indikator' => (int) $item['id_indikator'],
+          'skor' => (int) $item['skor'],
+        ]);
+        ?>
+        <tr>
+          <td><?= $pertanyaan; ?></td>
+          <td><?= htmlspecialchars($item['nama_padukuhan'], ENT_QUOTES, 'UTF-8'); ?></td>
+          <td><?= htmlspecialchars($item['nama_indikator'], ENT_QUOTES, 'UTF-8'); ?></td>
+          <td><?= htmlspecialchars($item['surveyor'], ENT_QUOTES, 'UTF-8'); ?></td>
+          <td class="num"><?= (int) $item['skor']; ?></td>
+          <td class="d-flex" style="gap:6px;">
+            <button class="btn btn-outline btn-sm" data-form-open="#modal-pertanyaan" data-title="Ubah pertanyaan" data-form-action="<?= base_url('manajemen_data/update_pertanyaan'); ?>" data-fields="<?= $dataUbah; ?>"><i class="fas fa-edit mr-1"></i> Ubah</button>
+            <button class="btn btn-sm btn-danger-soft" data-confirm-open="#modal-konfirmasi" data-title="Hapus pertanyaan" data-message="Hapus pertanyaan &quot;<?= $pertanyaan; ?>&quot;?" data-form-action="<?= base_url('manajemen_data/hapus_pertanyaan'); ?>" data-fields="<?= modal_fields(['id_pertanyaan' => (int) $item['id_pertanyaan']]); ?>"><i class="fas fa-trash mr-1"></i> Hapus</button>
+          </td>
+        </tr>
+      <?php endforeach; ?>
+    </tbody>
+  </table>
+</div>

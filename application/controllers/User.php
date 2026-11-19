@@ -1,51 +1,40 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class User extends CI_Controller
+class User extends MY_Controller
 {
-     public function __construct()
-     {
-          parent::__construct();
-          check_login();
-     }
-     public function index()
-     {
-          $data['title'] = 'Dashboard';
-          $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-          $data['padukuhan'] = $this->db->count_all_results('padukuhan');
-          $data['indikator'] = $this->db->count_all_results('indikator');
-          $data['kategori'] = $this->db->count_all_results('kategori');
-          $data['survey'] = $this->db->count_all_results('pertanyaan');
+    public function __construct()
+    {
+        parent::__construct();
+        check_login();
+    }
 
-          $this->load->view('templates/dashboard/dashboard_header', $data);
-          $this->load->view('templates/dashboard/sidebar', $data);
-          $this->load->view('templates/dashboard/topbar', $data);
-          $this->load->view('users/index', $data);
-          $this->load->view('templates/dashboard/dashboard_footer');
-     }
+    public function index()
+    {
+        $data = [
+            'padukuhan' => $this->master_model->count('padukuhan'),
+            'indikator' => $this->master_model->count('indikator'),
+            'pertanyaan' => $this->master_model->count('pertanyaan'),
+            'survey' => $this->master_model->count('survey'),
+            'ringkasan' => $this->fuzzy_model->ringkasan(),
+            'hasil' => $this->fuzzy_model->hasil(),
+            'kategoriRingkasan' => $this->master_model->ringkasanKategori(),
+        ];
 
-     public function myprofile()
-     {
-          $data['title'] = 'My Profile';
-          $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $this->render('users/index', 'Dashboard', $data);
+    }
 
-          $this->load->view('templates/dashboard/dashboard_header', $data);
-          $this->load->view('templates/dashboard/sidebar', $data);
-          $this->load->view('templates/dashboard/topbar', $data);
-          $this->load->view('users/myprofile', $data);
-          $this->load->view('templates/dashboard/dashboard_footer');
-     }
+    public function hasil_keputusan()
+    {
+        $this->render('users/hasil_keputusan', 'Rekap Potensi', [
+            'hasil' => $this->fuzzy_model->hasil(),
+            'ringkasan' => $this->fuzzy_model->ringkasan(),
+            'kategoriRingkasan' => $this->master_model->ringkasanKategori(),
+        ]);
+    }
 
-
-     public function hasil_keputusan()
-     {
-          $data['title'] = 'Hasil Keputusan';
-          $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-
-          $this->load->view('templates/dashboard/dashboard_header', $data);
-          $this->load->view('templates/dashboard/sidebar', $data);
-          $this->load->view('templates/dashboard/topbar', $data);
-          $this->load->view('users/hasil_keputusan', $data);
-          $this->load->view('templates/dashboard/dashboard_footer');
-     }
+    public function myprofile()
+    {
+        $this->render('users/myprofile', 'Profil Saya');
+    }
 }

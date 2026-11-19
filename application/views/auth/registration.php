@@ -1,48 +1,36 @@
- <div class="container">
+<p class="eyebrow">Akses survei</p>
+<h2>Buat akun baru</h2>
+<p>Akun baru aktif setelah disetujui admin.</p>
 
-      <div class="card o-hidden border-0 shadow-lg my-5 col-lg-7 mx-auto">
-           <div class="card-body p-0">
-                <!-- Nested Row within Card Body -->
-                <div class="row">
-                     <div class="col-lg">
-                          <div class="p-5">
-                               <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Buat Akun Baru!</h1>
-                               </div>
-                               <form class="user" method="post" action="<?= base_url('auth/registration'); ?>">
-                                    <div class="form-group">
-                                         <input type="text" class="form-control form-control-user" id="full_name" name="full_name" placeholder="Nama Panjang" value="<?= set_value('full_name'); ?>">
-                                         <?= form_error('full_name', '<small class="text-danger pl-3">', '</small>'); ?>
-                                    </div>
-                                    <div class="form-group">
-                                         <input type="text" class="form-control form-control-user" id="email" name="email" placeholder="Alamat Email" value="<?= set_value('email'); ?>">
-                                         <?= form_error('email', '<small class="text-danger pl-3">', '</small>'); ?>
-                                    </div>
-                                    <div class="form-group row">
-                                         <div class="col-sm-6 mb-3 mb-sm-0">
-                                              <input type="password" class="form-control form-control-user" id="password" name="password" placeholder="Password">
-                                              <?= form_error('password', '<small class="text-danger pl-3">', '</small>'); ?>
-                                         </div>
-                                         <div class="col-sm-6">
-                                              <input type="password" class="form-control form-control-user" id="repeat_password" name="repeat_password" placeholder="Ulangi Password">
-                                              <?= form_error('repeat_password', '<small class="text-danger pl-3">', '</small>'); ?>
-                                         </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary btn-user btn-block">
-                                         Daftar Akun
-                                    </button>
-                               </form>
-                               <hr>
-                               <div class="text-center">
-                                    <a class="small" href="forgot-password.html">Lupa Password?</a>
-                               </div>
-                               <div class="text-center">
-                                    <a class="small" href="<?= base_url('auth/'); ?>">Sudah memiliki akun? Login!</a>
-                               </div>
-                          </div>
-                     </div>
-                </div>
-           </div>
-      </div>
+<?= $this->session->flashdata('message'); ?>
 
- </div>
+<form method="post" action="<?= base_url('auth/registration'); ?>">
+  <label class="form-label" for="full_name">Nama lengkap</label>
+  <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Nama Anda" value="<?= set_value('full_name'); ?>">
+  <?= form_error('full_name', '<small class="invalid-feedback d-block">', '</small>'); ?>
+
+  <label class="form-label" for="email">Alamat email</label>
+  <input type="email" class="form-control" id="email" name="email" placeholder="nama@email.com" value="<?= set_value('email'); ?>">
+  <?= form_error('email', '<small class="invalid-feedback d-block">', '</small>'); ?>
+
+  <div class="grid-2" style="gap:12px;">
+    <div>
+      <label class="form-label" for="password">Kata sandi</label>
+      <input type="password" class="form-control" id="password" name="password" placeholder="Minimal 6 karakter">
+      <?= form_error('password', '<small class="invalid-feedback d-block">', '</small>'); ?>
+    </div>
+    <div>
+      <label class="form-label" for="repeat_password">Ulangi kata sandi</label>
+      <input type="password" class="form-control" id="repeat_password" name="repeat_password" placeholder="Sama seperti di atas">
+      <?= form_error('repeat_password', '<small class="invalid-feedback d-block">', '</small>'); ?>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-gold btn-block mt-2">Daftar <i class="fas fa-arrow-right ml-1"></i></button>
+</form>
+
+<hr class="my-4">
+<div class="d-flex justify-content-between" style="font-size:12px;">
+  <a href="<?= base_url(); ?>">Kembali ke beranda</a>
+  <a href="<?= base_url('auth'); ?>">Sudah punya akun? Masuk</a>
+</div>

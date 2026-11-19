@@ -1,44 +1,35 @@
-                    <!-- Begin Page Content -->
-                    <div class="container-fluid">
+<?php
+$this->load->view('partials/modal_confirm', [
+  'modalId' => 'modal-hitung',
+  'title' => 'Hitung ulang',
+  'action' => base_url('fuzzy/hitung'),
+  'message' => 'Perhitungan ulang akan menimpa hasil pada tahun yang sama. Lanjutkan?',
+]);
+?>
 
-                         <!-- Page Heading -->
-                         <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
+<div class="page-head">
+  <div><p class="eyebrow">Ringkasan sistem</p><h1>Dashboard</h1><p>Pantau data survei dan hasil rekomendasi potensi padukuhan.</p></div>
+  <button class="btn btn-gold" data-confirm-open="#modal-hitung" data-title="Hitung ulang" data-message="Perhitungan ulang akan menimpa hasil pada tahun yang sama. Lanjutkan?" data-form-action="<?= base_url('fuzzy/hitung'); ?>" data-fields="<?= modal_fields([]); ?>"><i class="fas fa-rotate mr-2"></i> Hitung ulang</button>
+</div>
 
-                         <!-- Card -->
-                         <!-- <div class="row row-cols-1 row-cols-md-4"> -->
-                         <div class="card-deck">
-                              <div class="col mb-4">
-                                   <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-                                        <div class="card-body">
-                                             <h5 class="card-title">Total Padukuhan</h5>
-                                             <p class="card-text display-3"><?= $padukuhan; ?></p>
-                                        </div>
-                                   </div>
-                              </div>
-                              <div class="col mb-4">
-                                   <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
-                                        <div class="card-body">
-                                             <h5 class="card-title">Total Indikator</h5>
-                                             <p class="card-text display-3"><?= $indikator; ?></p>
-                                        </div>
-                                   </div>
-                              </div>
-                              <div class="col mb-4">
-                                   <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
-                                        <div class="card-body">
-                                             <h5 class="card-title">Total Kategori</h5>
-                                             <p class="card-text display-3"><?= $kategori; ?></p>
-                                        </div>
-                                   </div>
-                              </div>
-                              <div class="col mb-4">
-                                   <div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
-                                        <div class="card-body">
-                                             <h5 class="card-title">Total Survey</h5>
-                                             <p class="card-text display-3"><?= $survey; ?></p>
-                                        </div>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-                    <!-- /.container-fluid -->
+<?= $this->session->flashdata('message'); ?>
+
+<div class="stat-grid">
+  <div class="stat"><div class="stat-label">Padukuhan</div><div class="stat-value"><?= (int) ($padukuhan ?? 0); ?></div></div>
+  <div class="stat"><div class="stat-label">Indikator</div><div class="stat-value"><?= (int) ($indikator ?? 0); ?></div></div>
+  <div class="stat"><div class="stat-label">Kategori</div><div class="stat-value"><?= (int) ($kategori ?? 0); ?></div></div>
+  <div class="stat"><div class="stat-label">Pertanyaan survei</div><div class="stat-value"><?= (int) ($pertanyaan ?? 0); ?></div></div>
+</div>
+
+<h3 class="mb-3">Sektor potensi</h3>
+<?php $this->load->view('partials/kategori_grid', ['kategoriRingkasan' => $kategoriRingkasan ?? []]); ?>
+
+<h3 class="mb-3 mt-4">Sebaran potensi</h3>
+<?php $this->load->view('partials/ringkasan', ['ringkasan' => $ringkasan, 'tahun' => date('Y')]); ?>
+
+<div class="mt-4">
+  <?php $this->load->view('partials/potensi_utama', ['hasil' => $hasil ?? []]); ?>
+</div>
+
+<div class="card-head mt-4"><h3>Hasil terbaru</h3><a class="btn btn-outline btn-sm" href="<?= base_url('fuzzy/hasil'); ?>">Semua hasil</a></div>
+<?php $this->load->view('partials/tabel_hasil', ['hasil' => $hasil ?? [], 'showAksi' => true, 'tahun' => date('Y')]); ?>
